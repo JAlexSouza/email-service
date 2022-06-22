@@ -10,3 +10,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+
+#Jasypt
+jasypt:
+  password: tGlirw6[<sqooq:8;lfT;J%ota:(zf%K

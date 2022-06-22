@@ -20,11 +20,13 @@ import org.springframework.kafka.support.serializer.JsonSerializer;
 
 @Configuration
 public class KafkaConfig<T> {
+		
+	private final String bootstrapAdress = "localhost:9092";	
+	private Class<T> cls;
 	
-	
-	private final String bootstrapAdress = "localhost:9092";
-	
-	Class<T> cls;
+	public KafkaConfig(Class<T> cls){
+		this.cls = cls;
+	}
 	
 	@Bean
 	public KafkaTemplate<String, T> kafkaTemplate() {
@@ -32,41 +34,34 @@ public class KafkaConfig<T> {
 	}
 	
 	@Bean
-	public ConcurrentKafkaListenerContainerFactory<String, T> kafkaListenerContainerFactory() {
+	public ConcurrentKafkaListenerContainerFactory<String, T> kafkaListenerContainerFactory() {			
+		ConcurrentKafkaListenerContainerFactory<String, T> factory = new ConcurrentKafkaListenerContainerFactory<>();
+		factory.setConsumerFactory(consumerFactory());
 			
-		ConcurrentKafkaListenerContainerFactory<String, T> factory = 	new ConcurrentKafkaListenerContainerFactory<>();
-			factory.setConsumerFactory(consumerFactory());
-			
-			return factory;
+		return factory;
 	}
 
 	private ProducerFactory<String, T> producerFactory() {
-
 		@SuppressWarnings("resource")
 		JsonSerializer<T> serializer = new JsonSerializer<T>();
 		Map<String, Object> props = new HashMap<String, Object>();
 
 		props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, this.bootstrapAdress);
 		props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-		props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, serializer.getClass().getName());
+		props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, serializer.getClass().getName()); 
 		props.put(ProducerConfig.CLIENT_ID_CONFIG, "shop-id");
 
 		return new DefaultKafkaProducerFactory<>(props);
-
 	}
 	
-	private ConsumerFactory<String, T> consumerFactory(){
-		
-		JsonDeserializer<T> deserializer = new JsonDeserializer<>(cls, true);
-		
+	private ConsumerFactory<String, T> consumerFactory(){		
+		JsonDeserializer<T> deserializer = new JsonDeserializer<T>(cls, false);
 		Map<String, Object> props = new HashMap<String, Object>();
 
 		props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAdress);
 		props.put(JsonDeserializer.TRUSTED_PACKAGES, "*");
 		
-
-		return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(), deserializer);
-		
+		return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(), deserializer);		
 	}
 
 }

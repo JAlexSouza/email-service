@@ -1,4 +1,4 @@
-package br.com.usermanager.core.usercase.contracts;
+package br.com.usermanager.core.usecase.contracts;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
