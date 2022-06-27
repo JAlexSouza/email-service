@@ -21,5 +21,4 @@ public class UserController {
 	public ResponseEntity<String> registerUser(@RequestBody UserDTO userDTO){
 		return userService.resgiterUser(userDTO);
 	}
-
 }

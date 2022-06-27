@@ -9,5 +9,4 @@ import br.com.usermanager.core.model.entity.User;
 public interface UserRepository extends JpaRepository<User, Long> {
 
 	User findByEmail(String email);
-
 }

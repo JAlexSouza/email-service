@@ -17,7 +17,6 @@ public class UserDTO {
 	private String name;
 	private String lastName;
 	
-
 	public static UserDTO convert(User user) {
 		return UserDTO.builder()
 							.email(user.getEmail())

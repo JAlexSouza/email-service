@@ -1,2 +1,19 @@
 server:
   port: 8092
+
+spring:
+  mail:
+    host: email-smtp.us-east-1.amazonaws.com
+    port: 587
+    username: AKIA2WNZYDTWU322TFUI
+    password: BPRin5aS5YZhdNn05IELmyEVkkdzgv8lZuLn9Ap7z4pq
+
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+          connectiontimeout: 5000
+          timeout: 3000
+          writetimeout: 5000

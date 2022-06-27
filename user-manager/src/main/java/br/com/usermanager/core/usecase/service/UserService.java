@@ -10,13 +10,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import br.com.usermanager.core.model.dto.UserDTO;
-import br.com.usermanager.core.model.dto.UserKeyDTO;
 import br.com.usermanager.core.model.entity.User;
 import br.com.usermanager.core.model.entity.UserKey;
 import br.com.usermanager.core.model.enums.UserStatus;
 import br.com.usermanager.core.usecase.contracts.UserKeyRepository;
 import br.com.usermanager.core.usecase.contracts.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 public class UserService {
 
@@ -30,11 +31,13 @@ public class UserService {
 	private UserKeyRepository userKeyRepository;	
 
 	public ResponseEntity<String> resgiterUser(UserDTO userDTO) {
+		log.info("Recebido usuarío de email: {}", userDTO.getEmail());
 		try {
+			log.info("Verificando se usuário é cadastrado...");
 			User user = userRepository.findByEmail(userDTO.getEmail());
 
 			if (Objects.isNull(user)) {
-
+				log.info("Cadastrando usuário...");
 				user = User.builder()
 						.email(userDTO.getEmail())
 						.password(userDTO.getPassword())
@@ -45,13 +48,16 @@ public class UserService {
 
 				userRepository.save(user);
 
-				UserKey userKey = UserKey.builder().user(user).keySecrete(UUID.randomUUID().toString())
-						.registrationDate(LocalDate.now()).build();
+				log.info("Cadastrando chaves do usuario...");
+				UserKey userKey = UserKey.builder()
+											.user(user)
+											.keySecrete(UUID.randomUUID().toString())
+											.registrationDate(LocalDate.now())
+											.build();
 
-				UserKeyDTO.convert(userKeyRepository.save(userKey));
+				userKeyRepository.save(userKey);
 
-				emailService.emailSender(userKey);
-				
+				emailService.emailSender(userKey);		
 			} else {
 				emailService.emailSender(user.getUserKey());
 			}			

@@ -13,5 +13,4 @@ public class EmailValidationDTO {
 	
 	private String emailDesnation;
 	private String text;
-
 }

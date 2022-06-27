@@ -12,6 +12,5 @@ import lombok.NoArgsConstructor;
 public class EmailValidationDTO {
 
 	private String text;
-	private String emailDesnation;
-	
+	private String emailDesnation;	
 }

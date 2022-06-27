@@ -11,7 +11,4 @@ public class KafkaConfiguration extends KafkaConfig<EmailValidationDTO>{
 	public KafkaConfiguration() {
 		super(EmailValidationDTO.class);
 	}
-	
-
-
 }

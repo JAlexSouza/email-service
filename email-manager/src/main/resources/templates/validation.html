@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+    <body>
+        <h1>Click on the link below to validate your registration</h1>
+		
+		<h2>
+        	<a th:href="@{http://localhost:8080/user/validation(key1=${destination},key2=${textEncripted})}" >Validation</a>
+        </h2> 
+    </body>
+</html>
