@@ -1,21 +1,16 @@
 package br.com.usermanager.core.usecase.service;
 
-import java.time.LocalDate;
-import java.util.Objects;
-import java.util.UUID;
+import br.com.usermanager.core.model.dto.*;
+import br.com.usermanager.core.model.entity.*;
+import br.com.usermanager.core.model.enums.*;
+import br.com.usermanager.core.usecase.contracts.*;
+import lombok.extern.slf4j.*;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.http.*;
+import org.springframework.stereotype.*;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
-
-import br.com.usermanager.core.model.dto.UserDTO;
-import br.com.usermanager.core.model.entity.User;
-import br.com.usermanager.core.model.entity.UserKey;
-import br.com.usermanager.core.model.enums.UserStatus;
-import br.com.usermanager.core.usecase.contracts.UserKeyRepository;
-import br.com.usermanager.core.usecase.contracts.UserRepository;
-import lombok.extern.slf4j.Slf4j;
+import java.time.*;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -59,6 +54,7 @@ public class UserService {
 
 				emailService.emailSender(userKey);		
 			} else {
+				log.info("Usuário - {} - já está cadastrado", userDTO.getEmail());
 				emailService.emailSender(user.getUserKey());
 			}			
 			return new ResponseEntity<String>("Cadastro efetuado com sucesso. Um email de verificação foi enviado para validar seu cadastro.", HttpStatus.BAD_GATEWAY);
