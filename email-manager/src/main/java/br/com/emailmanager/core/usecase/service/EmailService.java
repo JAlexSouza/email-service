@@ -36,7 +36,7 @@ public class EmailService {
     private SpringTemplateEngine templateEngine;
 		
 	@KafkaListener(topics =  KafkaTopic.EMAIL_VALIDATION, groupId = "email-service-group")
-	public void lisenEmailValidation(EmailValidationDTO emailValidationDTO) throws MessagingException {
+	public void listenEmailValidation(EmailValidationDTO emailValidationDTO) throws MessagingException {
 		log.info("Recebido email de validação: {}", emailValidationDTO.getEmailDesnation());
 		try {
 		MimeMessage message = javaMailSender.createMimeMessage();
@@ -56,16 +56,16 @@ public class EmailService {
 
 	private String getValidationHtml(EmailValidationDTO emailValidationDTO) throws IOException {
 		log.info("formatação do html do email de validação...");
-		Map<String, Object> propperties =  new HashMap<>();
-		propperties.put("destination", emailValidationDTO.getEmailDesnation());
-		propperties.put("textEncripted", emailValidationDTO.getText());
+		Map<String, Object> properties =  new HashMap<>();
+		properties.put("destination", emailValidationDTO.getEmailDesnation());
+		properties.put("textEncrypted", emailValidationDTO.getText());
 		
 		Context context = new Context();
-		context.setVariables(propperties);
+		context.setVariables(properties);
 		
 		String html = templateEngine.process("validation", context);
 		
-		log.info("html contruido...");
+		log.info("html construído...");
 		return html;
 	}
 
